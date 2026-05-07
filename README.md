@@ -1,2 +1,155 @@
-# atm-interface
-A simple ATM Interface project that simulates basic banking operations like balance inquiry, deposit, and withdrawal. Designed using Java to demonstrate object-oriented programming and user interaction.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ATM Interface</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* NEW BACKGROUND */
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* GLASS CARD */
+.card {
+    width: 400px;
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+    background: #ffcc00;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ffdd33;
+}
+
+/* OUTPUT */
+#output {
+    margin-top: 15px;
+    white-space: pre-line;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🏧 ATM INTERFACE</h2>
+
+    <!-- LOGIN -->
+    <div id="login">
+        <input type="password" id="pin" placeholder="Enter PIN">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- MENU -->
+    <div id="menu" class="hidden">
+        <button onclick="showBalance()">Check Balance</button>
+        <button onclick="withdraw()">Withdraw</button>
+        <button onclick="deposit()">Deposit</button>
+        <button onclick="showHistory()">Transaction History</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="output"></div>
+
+</div>
+
+<script>
+let balance = 1000;
+let history = [];
+let correctPin = "1234";
+
+function login() {
+    let pin = document.getElementById("pin").value;
+
+    if(pin === correctPin) {
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("menu").classList.remove("hidden");
+    } else {
+        alert("Wrong PIN!");
+    }
+}
+
+function showBalance() {
+    document.getElementById("output").innerText = "Balance: ₹" + balance;
+}
+
+function withdraw() {
+    let amount = prompt("Enter amount:");
+
+    if(amount > 0 && amount <= balance) {
+        balance -= amount;
+        history.push("Withdraw: ₹" + amount);
+        document.getElementById("output").innerText = "Withdrawn ₹" + amount;
+    } else {
+        document.getElementById("output").innerText = "Invalid amount!";
+    }
+}
+
+function deposit() {
+    let amount = prompt("Enter amount:");
+
+    if(amount > 0) {
+        balance += Number(amount);
+        history.push("Deposit: ₹" + amount);
+        document.getElementById("output").innerText = "Deposited ₹" + amount;
+    }
+}
+
+function showHistory() {
+    document.getElementById("output").innerText =
+        history.length ? history.join("\n") : "No transactions yet.";
+}
+
+function logout() {
+    document.getElementById("login").classList.remove("hidden");
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("output").innerText = "";
+}
+</script>
+
+</body>
+</html>
